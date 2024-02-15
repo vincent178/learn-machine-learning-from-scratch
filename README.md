@@ -4,6 +4,7 @@ Machine Learning Notes
 机器学习
 
 * 分类问题
+
 * 回归问题
 
 https://zhuanlan.zhihu.com/p/94152890 (未读)
@@ -11,6 +12,10 @@ https://zhuanlan.zhihu.com/p/94152890 (未读)
 经典统计学习技术中的线性回归和softmax回归可以视为线性神经网络
 
 https://zh.d2l.ai/chapter_linear-networks/index.html
+
+softmax 函数的输出是0.0到1.0之间的实数，且输出值的总和为1，因此通常被称为“概率”。
+
+**求解机器学习的问题的步骤分为“学习”和“推理”。**
 
 算法
 
