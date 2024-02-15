@@ -1,5 +1,4 @@
 import numpy as np
-import binascii
 
 # The MNIST dataset is publicly available at https://yann.lecun.com/exdb/mnist/ 
 # and consists of the following four parts: 
@@ -9,39 +8,12 @@ import binascii
 def download():
     print("TODO")
 
-def load_images(train=True):
-    if train:
-        filename = "data/MNIST/raw/train-images-idx3-ubyte"
-    else:
-        filename = "data/MNIST/raw/t10k-images-idx3-ubyte"
-
-    with open(filename, "rb") as f: 
-        # IDX magic number is 4 bytes
-        # 3 dimensions size is 3 * 4 bytes = 12 bytes
-        # so offset is 16 bytes
-        data = np.frombuffer(f.read(), np.uint8, offset=16).reshape((60000, 28, 28))
-        return data
-
-def load_labels(train=True):
-    if train:
-        filename = "data/MNIST/raw/train-labels-idx1-ubyte"
-    else:
-        filename = "data/MNIST/raw/t10k-labels-idx1-ubyte"
-
-    with open(filename, "rb") as f: 
-        # IDX magic number is 4 bytes
-        # 1 dimension size is 4 bytes
-        # so offset is 8 bytes
-        data = np.frombuffer(f.read(), np.uint8, offset=8)
-        print(data[0:10])
-        return data
-
-def print_binary(binary_data):
-    # original print
-    print(binary_data)
-
-    # print ascii string
-    print(binascii.b2a_hex(binary_data))
+def load_mnist():
+    x_train = load_idx_file("data/MNIST/raw/train-images-idx3-ubyte")
+    x_test = load_idx_file("data/MNIST/raw/t10k-images-idx3-ubyte")
+    t_train = load_idx_file("data/MNIST/raw/train-labels-idx1-ubyte")
+    t_test = load_idx_file("data/MNIST/raw/t10k-labels-idx1-ubyte")
+    return (x_train, t_train), (x_test, t_test)
 
 # The IDX file format is a simple format for vectors and multidimensional matrices of various numerical types.
 # The basic format according to http://yann.lecun.com/exdb/mnist/ is:
@@ -66,35 +38,32 @@ def print_binary(binary_data):
 
 # The fouth byte codes the number of dimensions of the vector/matrix: 1 for vectors, 2 for matrices....
 # The sizes in each dimension are 4-byte integers (big endian, like in most non-Intel processors).
-def parse_idx_file(filename):
+def load_idx_file(filename):
     with open(filename, 'rb') as f:
-        print(f.read(2))
+        f.read(2)
 
         typ = f.read(1)
         match typ:
             case b'\x08':
-                print('unsigned byte')
+                dtype = np.uint8
             case b'\x09':
-                print('signed byte')
+                dtype = np.int8
             case b'\x0B':
-                print('short')
+                dtype = np.int16
             case b'\x0C':
-                print('int')
+                dtype = np.int32
             case b'\x0D':
-                print('float')
+                dtype = np.float32
             case b'\x0E':
-                print('double')
+                dtype = np.float64
             case _:
-                print('unknown')
+                raise ValueError('unknown type of the data')
 
-        dims_num = f.read(1)
-        print(len(dims_num))
-        print(ord(dims_num))
+        dims_num = ord(f.read(1))
 
-        for _ in range(ord(dims_num)):
-            dim_n = f.read(4)
-            size_n = int.from_bytes(dim_n, 'big')
-            print(size_n)
-            print_binary(dim_n)
+        shape = []
+        for _ in range(dims_num):
+            dim_size = int.from_bytes(f.read(4), 'big')
+            shape.append(dim_size)
 
-       
+        return np.frombuffer(f.read(), dtype).reshape(shape)
