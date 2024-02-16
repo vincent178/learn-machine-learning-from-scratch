@@ -19,6 +19,12 @@ softmax 函数的输出是0.0到1.0之间的实数，且输出值的总和为1�
 
 算法
 
+* Loss Function 损失函数
+
+** 均方误差
+
+** 交叉熵
+
 * LMS 算法
 
 ## 提问
@@ -26,4 +32,11 @@ softmax 函数的输出是0.0到1.0之间的实数，且输出值的总和为1�
 1. 什么是回归 
 2. 矩阵，张量和N维空间是什么关系，如何可视化表现
 
+## Requirements
 
+* numpy 1.26.3
+* pandas 2.2.0
+* pyarrow 15.0.0
+* matplotlib 3.8.2
+* torch 2.2.0
+* torchvision 0.17.0
