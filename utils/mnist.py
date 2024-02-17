@@ -1,4 +1,5 @@
 import numpy as np
+import torchvision 
 
 # The MNIST dataset is publicly available at https://yann.lecun.com/exdb/mnist/ 
 # and consists of the following four parts: 
@@ -7,9 +8,10 @@ import numpy as np
 # - Test set images: t10k-images-idx3-ubyte.gz (1.6 MB, 7.8 MB, unzipped and 10,000 samples) 
 # - Test set labels: t10k-labels-idx1-ubyte.gz (5 KB, 10 KB unzipped, and 10,000 labels)
 def download():
-    print("TODO")
+    torchvision.datasets.MNIST(root="data", train=True, download=True)
 
 def load_mnist():
+    download()
     x_train = load_idx_file("data/MNIST/raw/train-images-idx3-ubyte")
     x_test = load_idx_file("data/MNIST/raw/t10k-images-idx3-ubyte")
     t_train = load_idx_file("data/MNIST/raw/train-labels-idx1-ubyte")
