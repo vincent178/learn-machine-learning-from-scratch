@@ -4,6 +4,11 @@ from matplotlib import pyplot as plt
 
 # 经典统计学习技术中的线性回归和softmax回归可以视为线性神经网络
 # https://zh.d2l.ai/chapter_linear-networks/index.html
+
+
+# 权重决定了每个特征对我们预测值的影响
+# 偏置是指当所有特征都取值为0时，预测值应该为多少
+# 输入特征的一个 仿射变换（affine transformation）。 仿射变换的特点是通过加权和对特征进行线性变换（linear transformation）， 并通过偏置项来进行平移（translation）
 (x_train, t_train), (x_test, t_test) = mnist.load_mnist()
 print(x_train.shape)
 
