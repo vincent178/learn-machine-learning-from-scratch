@@ -68,41 +68,47 @@ def func1(x):
 def gradient_func1(x):
     return 2 * x - 4
 
-def draw_plot_with_learning_rate(rate):
+def func2(x):
+    return np.power(x, 4) - 2 * np.power(x, 3) + 2
+
+def gradient_func2(x):
+    return 4 * np.power(x, 3) - 6 * np.power(x, 2)
+
+def draw_plot_with_learning_rate(rate, func, gradient_func):
     fig = plt.figure()
 
-    x = np.linspace(-6, 10, 100)
-    y = func1(x)
+    x = np.linspace(-0.5, 2.0, 100)
+    y = func(x)
 
     plt.plot(x, y)
 
-    steps, result = gradient_descent(9, gradient_func1, rate, 100)
+    steps, result = gradient_descent(-0.5, gradient_func, rate, 100)
     steps = np.array(steps)
 
     print(steps)
     print(result)
 
     # # 散点
-    # plt.scatter(steps, func1(steps), color='red')
+    # plt.scatter(steps, func(steps), color='red')
 
     # # 连接散点
-    # plt.plot(steps, func1(steps), linestyle='-', color='red')
+    # plt.plot(steps, func(steps), linestyle='-', color='red')
 
     # for i, _ in enumerate(steps):
     #     if i > 8:
     #         break
     #     # 标注
-    #     plt.annotate(str(i), (steps[i], func1(steps[i])), textcoords="offset points", xytext=(10, -7), ha='center')
+    #     plt.annotate(str(i), (steps[i], func(steps[i])), textcoords="offset points", xytext=(10, -7), ha='center')
 
     def update(frame):
         ani_x = steps[:frame]
-        ani_y = func1(ani_x)
+        ani_y = func(ani_x)
 
         plt.scatter(ani_x, ani_y, color='red')
         plt.plot(ani_x, ani_y, linestyle='-', color='red')
         if frame > 8:
             return
-        plt.annotate(str(frame), (steps[frame], func1(steps[frame])), textcoords="offset points", xytext=(10, -7), ha='center')
+        plt.annotate(str(frame), (steps[frame], func(steps[frame])), textcoords="offset points", xytext=(10, -7), ha='center')
 
     ani = animation.FuncAnimation(fig, update, frames=len(steps), interval=500)
 
@@ -110,5 +116,5 @@ def draw_plot_with_learning_rate(rate):
     plt.grid()
     plt.show()
 
-draw_plot_with_learning_rate(0.1)
+draw_plot_with_learning_rate(0.4, func2, gradient_func2)
 
